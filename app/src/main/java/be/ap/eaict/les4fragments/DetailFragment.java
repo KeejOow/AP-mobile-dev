@@ -14,6 +14,11 @@ public class DetailFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void setNumber(int value) {
+        TextView tv = (TextView) getView().findViewById(R.id.text);
+        tv.setText("" + value);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,7 +30,6 @@ public class DetailFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView tv = (TextView) getView().findViewById(R.id.text);
-        tv.setText("" + getActivity().getIntent().getIntExtra("number", -1));
+        setNumber(getActivity().getIntent().getIntExtra("number", -1));
     }
 }

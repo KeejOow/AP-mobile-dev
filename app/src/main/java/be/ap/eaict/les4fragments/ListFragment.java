@@ -1,7 +1,7 @@
 package be.ap.eaict.les4fragments;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +13,12 @@ import android.widget.ListView;
 
 
 public class ListFragment extends Fragment {
+
+    OnListItemSelectedListener mCallback;
+
+    public interface OnListItemSelectedListener {
+        public void onListItemSelected(int value);
+    }
 
     public ListFragment() {
         // Required empty public constructor
@@ -42,11 +48,15 @@ public class ListFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), DetailActivity.class);
-                i.putExtra("number", position);
-                startActivity(i);
+                mCallback.onListItemSelected(position);
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = (OnListItemSelectedListener) context;
     }
 
 

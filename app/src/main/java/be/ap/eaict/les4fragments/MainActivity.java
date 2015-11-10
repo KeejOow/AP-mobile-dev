@@ -10,12 +10,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListFragment.OnListItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Initialise with a reasonable value
+        DetailFragment detailFrag = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+        if (detailFrag != null) {
+            // We are on a big screen with the detail fragment there, so just update the fragment
+            detailFrag.setNumber(0);
+        }
     }
 
     @Override
@@ -38,5 +50,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onListItemSelected(int value) {
+        DetailFragment detailFrag = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+
+        if (detailFrag != null) {
+            // We are on a big screen with the detail fragment there, so just update the fragment
+            detailFrag.setNumber(value);
+        } else {
+            // We are on a small screen --> start new activity
+            Intent i = new Intent(this, DetailActivity.class);
+            i.putExtra("number", value);
+            startActivity(i);
+        }
     }
 }
